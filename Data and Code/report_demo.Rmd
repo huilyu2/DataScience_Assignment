@@ -1,0 +1,62 @@
+---
+title: "Report Demo"
+date: "September 6, 2016"
+output: html_document
+---
+
+# Data
+Load the data for this assignment into your R session with the following command:
+
+```{r}
+load(url("http://courseweb.lis.illinois.edu/~jguo24/SFTemps.rda"))
+```
+
+Check to see that the data were loaded by running:
+
+```{r}
+objects()
+```
+This should show five variables: dates, dayOfMonth, month, temp, and year
+
+Use the length() function to find out how many observations there are.
+```{r}
+length(temp)
+```
+
+# Exercises
+
+1. What was the coldest temperature recorded in this time period?
+```{r}
+# Example code
+2+2
+```
+
+The coldest temperature is 4.
+
+***
+5. We would like to convert the temperature from Farenheit to Celsius. Below are several attempts to do so that each fail. 
+
+    Try running each expression in R. 
+    Record the error message in a comment
+    Explain what it means. 
+    Be sure to directly relate the wording of the error message with the problem you find in the expression.
+*(1 pt)*
+
+eval=FALSE tells R to not evaluate the code chunk, otherwise we flag an error and the document won't knit.
+```{r,eval=FALSE}
+(temp -32)
+```
+error message...  
+explanation...
+
+7. Run the following code to make a plot. (don't worry right now about what this code is doing)
+
+```{r}
+plot(temp~dates, col = rainbow(12)[month], type="p", pch=19, cex = 0.3)
+```
+
+Use the Zoom button in the Plots window to enlarge the plot.
+Resize the plot so that it is long and short, so it is easier to read.
+Include this plot in the homework your turn in. *(1 pt)*
+
+[Look here for how to include an image (and other useful tips)](http://rmarkdown.rstudio.com/authoring_basics.html)
