@@ -1,0 +1,196 @@
+---
+title: "LIS 490 Homework 1"
+date: "September 6, 2016"
+output:
+  html_document:
+    toc: true
+---
+
+# Data
+Load the data for this assignment into your R session with the following command:
+
+```{r}
+load(url("http://courseweb.lis.illinois.edu/~jguo24/SFTemps.rda"))
+```
+
+Check to see that the data were loaded by running:
+
+```{r}
+objects()
+```
+This should show five variables: dates, dayOfMonth, month, temp, and year
+
+Use the length() function to find out how many observations there are.
+```{r}
+length(dates)
+```
+
+# Exercises
+
+For the following questions, use one of:
+
+  * head()
+  * summary()
+  * class()
+  * min()
+  * max()
+  * hist()
+  * quantile()  
+  
+to answer the questions.
+
+1. What was the coldest temperature recorded in this time period? *(1 pt)*
+
+```{r}
+# We need to include na.rm=TRUE because there are missing values in the vector. What happens if we omit this?
+min(temp,na.rm=TRUE)
+```
+***
+
+2. What was the average temperature recorded in this time period? *(1 pt)*
+
+```{r}
+mean(temp,na.rm=TRUE)
+```
+***
+
+3. What does the distribution of temperatures look like, i.e. are there roughly as many warm as cold days, are the temps clustered around one value or spread evenly across the range of observed temperatures, etc.? *(2 pts)*
+
+```{r}
+# It is probably easiest to use a histogram
+hist(temp)
+
+# You can examine some summary statistics as well
+summary(temp)
+```
+***
+
+4. Examine the first few values of dates. These are a special type of data. Confirm this with class(). *(1 pt)*
+
+```{r}
+# Choose any number to subset
+dates[1:5]
+
+# Can also use head()
+head(dates)
+class(dates)
+```
+***
+
+5. We would like to convert the temperature from Farenheit to Celsius. Below are several attempts to do so that each fail. 
+
+    Try running each expression in R. 
+    Record the error message in a comment
+    Explain what it means. 
+    Be sure to directly relate the wording of the error message with the problem you find in the expression.
+*(1 pt)*
+
+```{r,eval=FALSE}
+(temp -32)
+```
+There isn't an error, but this isn't the proper formula to convert to celsius.
+
+```{r,eval=FALSE}
+(temp - 32)5/9
+```
+
+A. Error: unexpected numeric constant in "(temp - 32)5"  
+B. R doesn't know what to do with the 5 following the ). There should be some type of operator connecting the parenthetical expression and the 5.  
+
+```{r,eval=FALSE}
+5/9(temp - 32)
+```
+
+A. Error: attempt to apply non-function  
+B. R thinks that we are using 9(temp - 32) as a function, i.e. that there is some function called 9(). *(Is this even possible?)*. Again, we should have some operator between the 9 and the parenthetical expression. 
+
+```{r,eval=FALSE}
+[temp - 32]5/9
+```
+
+A. Error: unexpected '[' in "["  
+B. [] is used for indexing objects, such as object[1]. Is there an object called before the [] in this code?
+
+***
+6. Provide a well-formed expression that correctly performs the calculation that we want. Assign the converted values to tempC. *(1 pt)*
+
+```{r}
+tempC <- (temp-32)*(5/9)
+```
+
+7. Run the following code to make a plot. (don't worry right now about what this code is doing)
+
+```{r}
+plot(temp~dates, col = rainbow(12)[month], type="p", pch=19, cex = 0.3)
+```
+
+Use the Zoom button in the Plots window to enlarge the plot.
+Resize the plot so that it is long and short, so it is easier to read.
+Include this plot in the homework your turn in. *(1 pt)*
+
+![](/home/zach/Documents/School/LIS490/hw1/hw1_zoom.png)
+
+Make an interesting observation about temp in the Bay Area based on this plot (something that you couldn't see with the calculations so far.) *(1 pt)*
+
+```
+The spread of temperatures are fairly constant over the years (just an example).
+```
+
+What interesting question about the weather in the SF Bay Area would you like to answer with these data, but don't yet know how to do it? *(1 pt)*
+
+```
+Can I extract seasonal trends? (example)
+```
+***
+
+For the remainder of this assignment we will work with one of the random number generators in R.
+
+
+8. Use the following information about you to generate some random values *(5 pts)*:  
+    a. Use the day of the month you were born for the mean of the normal.
+    b.	Use your year of birth for the standard deviation (sd) of the normal curve.
+    c.	Generate 5 random values using the parameters from a and b.
+    d.	Assign the values to a variable named with your first name.
+    e.	Provide the values generated.
+
+```{r}
+mu <- 2
+sigma <- 1993
+zach <- rnorm(5,mu,sigma)
+zach
+```
+
+***
+9. Generate a vector called "normsamps" containing 100 random samples from a normal distribution with mean 2 and SD 1. *(1 pt)*
+
+```{r}
+normsamps <- rnorm(100,2,1)
+```
+
+***
+10. Calculate the mean and sd of the 100 values. *(1 pt)*
+
+```{r}
+mean(normsamps)
+sd(normsamps)
+```
+
+11. Use implicit coercion of logical to numeric to calculate the fraction of the values in normsamps that are more than 3. *(1 pt)*
+
+```{r}
+mean(normsamps>3)
+```
+
+***
+12. Look up the help for rnorm. You will see a few other functions listed. Use one of them to figure out about what answer you should expect for the previous problem.
+
+    That is, find the area under the normal(2, 1) curve to the right of 3.  This should be the chance of getting a random value more than 3. What value do you expect? What value did you get? Why might they be different? *(1 pt)*
+
+```{r}
+1-pnorm(3,2,1)
+pnorm(3,2,1,lower.tail = FALSE)
+```
+
+I would expect it to be close to `r mean(normsamps>3)`, but it can be a little off because I only sampled 100 observations, so my sample distribution is going to be slightly different than the true population distribution.
+
+You can also notice that we are asking what proportion of observations fall 1 standard deviation above the mean, which is approximately 16%.
